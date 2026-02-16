@@ -1,0 +1,160 @@
+direction: right
+
+
+sources: Sources {
+  
+  android: Android {
+    shape: image
+    icon: ./android.png
+    width: 40
+    height: 40
+  }
+
+  web: Web {
+    shape: image
+    icon: ./web.png
+    width: 40
+    height: 40
+  }
+  ios: iOS {
+    shape: image
+    icon: ./ios.png
+    width: 40
+    height: 40
+  }
+}
+
+
+  transformation: Transformation {
+    # height:100
+    output: Fixed {
+      shape: image
+      icon: json.png
+      width: 40
+      height: 40
+    }
+  }
+  validation: Validation {
+    # height:400
+    json_payload: payload {
+      shape: image
+      icon: json.png
+      width: 40
+      height: 40
+    }
+    json_schema: schema {
+      shape: image
+      icon: json.png
+      width: 40
+      height: 40
+    }
+  }
+
+transformation.output.style.font-color: green
+validation.json_schema.style.font-color: "red"
+
+destinations: Destinations {
+  width: 250
+  amplitude: Amplitude {
+    shape: image
+    icon: amplitude.avif
+    width: 40
+    height: 40
+  }
+  braze: Braze {
+    shape: image
+    icon: braze.png
+    width: 40
+    height: 40
+  }
+  snowflake: Snowflake {
+    shape: image
+    icon: snowflake.png
+    width: 40
+    height: 40
+  }
+}
+
+bad_data: Bad Data {
+  width: 250
+  snowflake: Snowflake {
+    shape: image
+    icon: snowflake.png
+    width: 40
+    height: 40
+  }
+}
+
+sources.android -> validation: {
+  style: {
+    animated: true
+  }
+}
+sources.web -> transformation.output: {
+  style: {
+    animated: true
+  }
+}
+sources.ios -> validation: {
+  style: {
+    animated: true
+  }
+}
+
+transformation.output -> validation: {
+  style: {
+    animated: true
+  }
+}
+
+
+validation.json_payload <-> validation.json_schema: {
+  style: {
+    animated: true
+    font-color: green
+  }
+}
+
+validation -> destinations.amplitude: ✅ PASS {
+  style: {
+    animated: true
+    font-color: green
+  }
+}
+
+validation -> destinations.braze: ✅ PASS {
+  style: {
+    animated: true
+    font-color: green
+  }
+}
+
+validation -> destinations.snowflake: ✅ PASS {
+  style: {
+    animated: true
+    font-color: green
+  }
+}
+
+validation -> bad_data.snowflake: ❌ FAILED {
+  style: {
+    animated: true
+    font-color: red
+  }
+}
+validation.json_schema -> stakeholders.docs {
+  style: {
+    animated: true
+    font-color: red
+  }
+}
+
+stakeholders: Stakeholders {
+  width: 250
+  docs: docs {
+    shape: image
+    icon: docs.png
+    width: 40
+    height: 40
+  }
+}

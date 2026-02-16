@@ -1,0 +1,11 @@
+Container Configuration
+aWQ9R1RNLVBaVjRGREc0JmVudj0xJmF1dGg9ODF1c25HVm8wNGM2SnJzN0ljcU40dw==
+
+Google Cloud Platform Project ID
+gtm-pzv4fdg4-zmnhy
+
+Created by
+hello@larrea.co.uk
+
+Default Url
+https://server-side-tagging-3phkixd4ta-uc.a.run.app

@@ -1,0 +1,25 @@
+explanation: |gherkin
+  Feature: Deposit
+  Depositing funds into my account
+
+  Scenario: Make a single deposit
+    Given I am logged in
+    When I make a deposit
+    Then I should see the Segment event "Deposit Success"
+    And I should see only 1 event
+|
+
+webdriverio: WebdriverIO {
+  shape: image
+  icon: webdriverio.svg
+  width: 40
+  height: 40
+}
+
+dashboard: Test Results {
+  test_1: Scenario: Login ✅ PASS
+  test_2: Scenario: Make a single deposit ✅ PASS
+  test_3: Scenario: Article page view ❌ FAILED
+}
+
+explanation -> webdriverio -> dashboard
