@@ -73,7 +73,7 @@ I would shift focus from short-term vanity metrics to longer-horizon indicators 
    - _SKAN_
    - _Probabilistic attribution_
 
-   SKAN enables campaign tracking on devices where users have opted out of ATT. However, due to its privacy-centric design, SKAN provides aggregated data instead of user-level insights. Moreover delays of two days or longer is expected.
+   SKAN enables campaign tracking on devices where users have opted out of ATT. However, due to its privacy-centric design, SKAN provides aggregated data instead of user-level insights. Moreover delays of two days or longer is expected. Probabilistic attribution may misattribute and over-report. Probability attribution such as the one offered by AppsFlyer still rely on IP addresses and the model are proprietary so the rules of attribution are not disclosed.
 
 1. _How would this affect LTV measurement?_
 
@@ -81,7 +81,76 @@ Since user-level data is unavailable and conversion data is limited and arrives 
 
 ## PART 2 — MarTech Technical Assessment
 
-| Container Type | Container Name   | Container ID   | Meta Pixel ID      |
-| :------------- | :--------------- | :------------- | :----------------- |
-| Server         | Brand X [Server] | `GTM-PZV4FDG4` | `1533644364407534` |
-| Web            | Brand X [Client] | `GTM-TSFCWXZZ` | `1533644364407534` |
+| Container Type | Container Name  | Container ID   | 
+| :------------- | :-------------- | :------------- |
+| Server         | Brands [Server] | `GTM-PZV4FDG4` |
+| Web            | Brands [Client] | `GTM-TSFCWXZZ` |
+
+
+| Brand Name | URL                       | Meta Pixel ID      |
+| :--------- | :------------------------ | :----------------- |
+| Brand X    | `brand-x-one.vercel.app`  | `1533644364407534` |
+| Brand Y    | `brand-y.vercel.app`      | `2299157367256743` |
+| Brand Z    | `brand-y-zioo.vercel.app` | `1514739266263477` |
+
+### Option A
+
+Track two separate events:
+
+- Standard _*Purchase*_
+- Custom _*FirstTimeDeposit*_
+
+### Option B
+
+Track a single event _*Purchase*_ and derive _*FirstTimeDeposit*_ from _Custom Conversions_ in event manager based on the event parameters.
+
+!["Custom Conversion"](./assets/meta_custom_conversion.png)
+
+
+```code:json
+// Purchase event sample payload 
+// Endpoint [POST]: https://server-side-tagging-3phkixd4ta-uc.a.run.app/collect
+
+{
+   "event_name":"purchase",
+   "event_id":"266375e4-2ce9-4202-b3d9-3de96a6aa57a",
+   "event_time":1771247930,
+   "action_source":"website",
+   "currency":"GBP",
+   "value":"5",
+   "is_ftd":"true",
+   "event_source_url":"https://brand-y-zioo.vercel.app",
+   "referrer_url":"https://brand-y-zioo.vercel.app/lp/spinners",
+   "user_data":{
+      "user_id":"445ef40b-f8e1-4f3f-bb03-f47d93a0875f",
+      "last_name":"Last Name",
+      "first_name":"First Name",
+      "browser_id":"fb.1.1615295627183.1234567890",
+      "click_id":"fb.1.1615295627183.1234567890",
+      "email":[
+         "first_name.last_name@email.io"
+      ],
+      "phone":[
+         "4407711283920"
+      ],
+      "client_ip_address":"31.48.104.214",
+      "client_user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+      "country":[
+         "gb"
+      ],
+      "county":[
+         "midlothian"
+      ],
+      "postcode":[
+         "eh11bb"
+      ],
+      "city":[
+         "edinburgh"
+      ],
+      "dob":[
+         "19700104"
+      ]
+   }
+}
+
+```
